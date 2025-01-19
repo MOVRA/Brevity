@@ -3,13 +3,17 @@ import { LuDoorOpen, LuHeart, LuHouse, LuSearch } from "react-icons/lu";
 import { NavLink } from "react-router";
 import { CgProfile } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { open } from "@/global/dialog/dialog-slice";
 
 export default function LeftBar() {
+  const dispatch = useDispatch();
+
   return (
     <Box
       width="20%"
       height="100vh"
-      borderRight="1px solid #e6e6e6"
+      borderRight="1px solid #212121"
       top="0"
       position="sticky"
       display="flex"
@@ -33,13 +37,13 @@ export default function LeftBar() {
             style={({ isActive }) => ({
               color: "white",
               backgroundColor: isActive
-                ? "rgba(93, 93, 93, 0.2)"
+                ? "rgba(93, 93, 93, 0.5)"
                 : "transparent",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
               padding: "0.5rem",
-              borderRadius: "1rem",
+              borderRadius: "0.7rem",
             })}
           >
             <LuHouse />
@@ -96,6 +100,17 @@ export default function LeftBar() {
             <CgProfile />
             Profile
           </NavLink>
+          <Button
+            marginTop="1rem"
+            onClick={() => dispatch(open(true))}
+            backgroundColor="white"
+            color="black"
+            width="100%"
+            borderRadius="1rem"
+            height="2rem"
+          >
+            Create Post
+          </Button>
         </Box>
       </Box>
       <Box display="flex">

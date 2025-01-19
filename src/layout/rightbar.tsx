@@ -5,7 +5,7 @@ export default function RightBar() {
     <Box
       width="30%"
       height="100vh"
-      borderLeft="1px solid #e6e6e6"
+      borderLeft="1px solid #212121"
       top="0"
       position="sticky"
     >

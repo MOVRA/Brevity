@@ -10,10 +10,6 @@ export const AxiosAuth = axios.create({
 
 export const AxiosFormData = axios.create({
   baseURL: "https://brevity-api-production.up.railway.app/brevity/api",
-  //   headers: {
-  //     "Content-Type": "multipart/form-data",
-  //     Authorization: `Bearer ${cookie}`,
-  //   },
 });
 
 AxiosFormData.interceptors.request.use((config) => {
@@ -27,10 +23,6 @@ AxiosFormData.interceptors.request.use((config) => {
 
 export const AxiosAppJson = axios.create({
   baseURL: "https://brevity-api-production.up.railway.app/brevity/api",
-  //   headers: {
-  //     "Content-Type": "application/JSON",
-  //     Authorization: `Bearer ${cookie}`,
-  //   },
 });
 
 AxiosAppJson.interceptors.request.use((config) => {
@@ -44,9 +36,6 @@ AxiosAppJson.interceptors.request.use((config) => {
 
 export const Axios = axios.create({
   baseURL: "https://brevity-api-production.up.railway.app/brevity/api",
-  //   headers: {
-  //     Authorization: `Bearer ${cookie}`,
-  //   },
 });
 
 Axios.interceptors.request.use((config) => {

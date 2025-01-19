@@ -1,4 +1,4 @@
-import { isLoggedIn } from "@/services/auth";
+import { isLoggedIn } from "@/api/auth";
 import { Navigate, Outlet } from "react-router";
 import LeftBar from "./leftbar";
 import RightBar from "./rightbar";
