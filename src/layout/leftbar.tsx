@@ -4,7 +4,8 @@ import { NavLink } from "react-router";
 import { CgProfile } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
-import { open } from "@/global/dialog/dialog-slice";
+import { open } from "@/global/state/dialog/dialog-slice";
+import Cookies from "js-cookie";
 
 export default function LeftBar() {
   const dispatch = useDispatch();
@@ -114,7 +115,14 @@ export default function LeftBar() {
         </Box>
       </Box>
       <Box display="flex">
-        <Button color="red" backgroundColor="transparent">
+        <Button
+          color="red"
+          backgroundColor="transparent"
+          onClick={() => {
+            Cookies.remove("cookies");
+            window.location.href = "/sign-in";
+          }}
+        >
           <LuDoorOpen /> Sign-out
         </Button>
       </Box>

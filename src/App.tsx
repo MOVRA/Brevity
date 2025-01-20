@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 import { userMe } from "./api/user";
 import { AppDispatch } from "./global/store";
-import { setUserLoggedIn } from "./global/user/user-slice";
+import { setUserLoggedIn } from "./global/state/user/user-slice";
 import Layout from "./layout/layout";
 import Follow from "./pages/follow/follow";
 import Home from "./pages/home/home";

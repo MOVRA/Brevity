@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./user/user-slice";
-import dialogReducer from "./dialog/dialog-slice";
+import userReducer from "../state/user/user-slice";
+import dialogReducer from "../state/dialog/dialog-slice";
+import deleteDialogReducer from "../state/dialog/delete-dialog.slice";
 
 export const store = configureStore({
   reducer: {
     loggedUser: userReducer,
     dialog: dialogReducer,
+    deleteDialog: deleteDialogReducer,
   },
 });
 

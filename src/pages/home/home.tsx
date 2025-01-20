@@ -5,26 +5,98 @@ import {
   DialogCloseTrigger,
   DialogContent,
   DialogFooter,
+  DialogHeader,
   DialogRoot,
 } from "@/components/ui/dialog";
 import { SkeletonCircle, SkeletonText } from "@/components/ui/skeleton";
-import { open } from "@/global/dialog/dialog-slice";
-import { AppDispatch, RootState } from "@/global/store";
+import { Toaster } from "@/components/ui/toaster";
+import { open } from "@/global/state/dialog/dialog-slice";
+import { AppDispatch, RootState } from "@/global/state/store";
 import { Post } from "@/types/thread";
-import { Box, Image, Text, Textarea } from "@chakra-ui/react";
-import moment from "moment";
-import { useState } from "react";
-import { LuImage } from "react-icons/lu";
+import { ThreadSchema, ThreadTypes } from "@/validator/thread";
+import { Box, Image, Input, Text, Textarea } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { LuImage, LuX } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
-import { GetThreads } from "./hooks/home-tanstack";
+import HomeThread from "./components/home-thread";
+import {
+  CreateLike,
+  CreateThreads,
+  DeleteLike,
+  DeleteThread,
+  GetThreads,
+} from "./hooks/home-tanstack";
+import { openDelete } from "@/global/state/dialog/delete-dialog.slice";
 
 export default function Home() {
   const [threads, setThreads] = useState<Post[]>();
+  const [threadId, setThreadId] = useState<string>("");
+  const [preview, setPreview] = useState<string | null>(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const { register, setValue, handleSubmit, reset } = useForm<ThreadTypes>({
+    defaultValues: {
+      content: "",
+      file: null,
+    },
+    resolver: zodResolver(ThreadSchema),
+  });
   const loggedUser = useSelector((state: RootState) => state.loggedUser.value);
   const dialog = useSelector((state: RootState) => state.dialog.value);
+  const deleteDialog = useSelector(
+    (state: RootState) => state.deleteDialog.value
+  );
   const dispatch = useDispatch<AppDispatch>();
   const { isFetching } = GetThreads(setThreads);
+  const { mutateAsync: mutateCreateThread, isPending: isPendingCreateThread } =
+    CreateThreads();
+  const { mutateAsync: mutateCreateLike } = CreateLike();
+  const { mutateAsync: mutateDeleteLike } = DeleteLike();
+  const { mutateAsync: mutateDeleteThread, isPending: isPendingDeleteThread } =
+    DeleteThread();
   const skele = 5;
+
+  function onChangeInputFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue("file", file);
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }
+
+  function onClickInputFile() {
+    inputFileRef.current?.click();
+  }
+
+  function onCloseDialog() {
+    setPreview(null);
+    reset();
+    dispatch(open(false));
+  }
+
+  async function handleSubmitThread(data: ThreadTypes) {
+    const response = await mutateCreateThread(data);
+    if (response.success) {
+      setPreview(null);
+      reset();
+    }
+    return;
+  }
+  function handleDeleteThread(threadId: string) {
+    mutateDeleteThread(threadId);
+    return;
+  }
+  function handleLike(threadId: string) {
+    mutateCreateLike(threadId);
+    return;
+  }
+  function handleUnLike(threadId: string) {
+    mutateDeleteLike(threadId);
+    return;
+  }
 
   return (
     <>
@@ -78,36 +150,13 @@ export default function Home() {
         {!isFetching &&
           threads
             ?.map((thread: Post) => (
-              <Box
+              <HomeThread
                 key={thread.id}
-                display="flex"
-                color="white"
-                borderTop="1px solid #212121"
-                gap="1rem"
-                padding="1.3rem"
-              >
-                <Avatar />
-                <Box display="flex" flexDirection="column" gap="0.1rem">
-                  <Box display="flex" gap="0.5rem">
-                    <Text fontSize="0.9rem" fontWeight="semibold">
-                      {thread.author.name}
-                    </Text>
-                    <Text color="gray" fontWeight="light" fontSize="0.8rem">
-                      @{thread.author.username}
-                    </Text>
-                    <Text color="gray" fontWeight="light" fontSize="0.8rem">
-                      &#9679;{" "}
-                      {moment(thread.createdAt).startOf("minutes").fromNow()}
-                    </Text>
-                  </Box>
-                  <Box display="flex" flexDirection="column" gap="0.5rem">
-                    <Text fontSize="0.9rem">{thread.content}</Text>
-                    {thread.file && (
-                      <Image src={thread.file} borderRadius="1rem" />
-                    )}
-                  </Box>
-                </Box>
-              </Box>
+                thread={thread}
+                handleLike={handleLike}
+                handleUnLike={handleUnLike}
+                setThreadId={setThreadId}
+              />
             ))
             .reverse()}
       </Box>
@@ -118,14 +167,14 @@ export default function Home() {
         size="lg"
       >
         <DialogContent backgroundColor="black" border="1px solid #212121">
-          <DialogBody
-            marginTop="1rem"
-            display="flex"
-            flexDirection="column"
-            gap="1rem"
-            padding="0rem 1rem"
-          >
-            <form>
+          <form onSubmit={handleSubmit(handleSubmitThread)}>
+            <DialogBody
+              marginTop="1rem"
+              display="flex"
+              flexDirection="column"
+              gap="1rem"
+              padding="0rem 1rem"
+            >
               <Box
                 display="flex"
                 gap="0.5rem"
@@ -134,6 +183,7 @@ export default function Home() {
               >
                 <Avatar src={loggedUser?.Profile?.file} />
                 <Textarea
+                  {...register("content")}
                   color="white"
                   border="none"
                   placeholder="What is happening!?"
@@ -143,30 +193,98 @@ export default function Home() {
                   focusRingColor="transparent"
                 />
               </Box>
-            </form>
-          </DialogBody>
-          <DialogFooter padding="1rem 1.5rem 1rem 1.5rem">
-            <Box
+            </DialogBody>
+            <DialogFooter
+              padding="1rem 1.5rem 1rem 1.5rem"
               display="flex"
-              justifyContent="space-between"
-              width="100%"
-              alignItems="center"
+              flexDirection="column"
+              gap="2rem"
             >
-              <LuImage size="1.5rem" color="gray" />
-              <Button
-                type="submit"
-                backgroundColor="white"
-                color="black"
-                borderRadius="1rem"
-                height="2rem"
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                width="100%"
+                alignItems="center"
               >
-                Post
-              </Button>
-            </Box>
-          </DialogFooter>
-          <DialogCloseTrigger onClick={() => dispatch(open(false))} />
+                <Input
+                  type="file"
+                  ref={inputFileRef}
+                  hidden
+                  onChange={onChangeInputFile}
+                />
+                <LuImage
+                  size="1.5rem"
+                  color="gray"
+                  onClick={onClickInputFile}
+                  cursor="pointer"
+                />
+                <Button
+                  type="submit"
+                  backgroundColor="white"
+                  color="black"
+                  borderRadius="1rem"
+                  height="2rem"
+                  loading={isPendingCreateThread}
+                >
+                  Post
+                </Button>
+              </Box>
+              {preview && (
+                <Box position="relative">
+                  <LuX
+                    color="white"
+                    style={{ position: "absolute", left: "95%", top: "1rem" }}
+                    onClick={() => setPreview(null)}
+                    cursor="pointer"
+                  />
+                  <Image src={preview} borderRadius="1rem" />
+                </Box>
+              )}
+            </DialogFooter>
+            <DialogCloseTrigger onClick={onCloseDialog} />
+          </form>
         </DialogContent>
       </DialogRoot>
+      <DialogRoot open={deleteDialog} size="lg">
+        <DialogContent
+          backgroundColor="black"
+          border="1px solid #212121"
+          color="white"
+        >
+          <DialogHeader>Are you sure?</DialogHeader>
+          <DialogBody>
+            Are you sure want to delete this thread? this action cannot be
+            resolve.
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              onClick={() => handleDeleteThread(threadId)}
+              loading={isPendingDeleteThread}
+              backgroundColor="transparent"
+              border="1px solid red"
+              color="red"
+              borderRadius="1rem"
+              height="2rem"
+            >
+              Delete
+            </Button>
+            <Button
+              backgroundColor="transparent"
+              border="1px solid white"
+              color="white"
+              borderRadius="1rem"
+              height="2rem"
+              onClick={() => {
+                dispatch(openDelete(false));
+                setThreadId("");
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </DialogRoot>
+      <Toaster />
     </>
   );
 }

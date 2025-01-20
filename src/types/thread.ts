@@ -1,14 +1,13 @@
-// src/types/Post.ts
-export interface Profile {
-  name: string;
-  username: string;
-  file: string;
-}
-
 export interface Post {
   id: string;
   content: string;
-  author: Profile;
+  author: {
+    username: string;
+    name: string;
+    Profile: {
+      file: string;
+    };
+  };
   authorId: string;
   createdAt: string;
   updatedAt: string;
