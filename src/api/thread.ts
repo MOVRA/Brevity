@@ -6,6 +6,11 @@ export const threads = async () => {
   return response.data;
 };
 
+export const threadById = async (threadId: string) => {
+  const response = await Axios.get(`/thread/${threadId}`);
+  return response.data;
+};
+
 export const addThread = async (data: ThreadTypes) => {
   const response = await AxiosFormData.post("/threads", data);
   return response.data;
@@ -18,6 +23,11 @@ export const addThreadLike = async (threadId: string) => {
 
 export const unlikeThread = async (threadId: string) => {
   const response = await AxiosAppJson.delete(`/likes/${threadId}`);
+  return response.data;
+};
+
+export const updateThread = async (data: ThreadTypes, threadId: string) => {
+  const response = await AxiosAppJson.patch(`/threads/${threadId}`, data);
   return response.data;
 };
 

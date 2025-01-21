@@ -12,7 +12,7 @@ export default function LeftBar() {
 
   return (
     <Box
-      width="20%"
+      width="25%"
       height="100vh"
       borderRight="1px solid #212121"
       top="0"

@@ -27,21 +27,27 @@ import {
   DeleteLike,
   DeleteThread,
   GetThreads,
+  UpdateThread,
 } from "./hooks/home-tanstack";
 import { openDelete } from "@/global/state/dialog/delete-dialog.slice";
+import { setStatus } from "@/global/state/dialog/status-dialog.slice";
 
 export default function Home() {
   const [threads, setThreads] = useState<Post[]>();
   const [threadId, setThreadId] = useState<string>("");
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null | undefined>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const defaultUseForm = {
+    content: "",
+    file: null,
+  };
   const { register, setValue, handleSubmit, reset } = useForm<ThreadTypes>({
-    defaultValues: {
-      content: "",
-      file: null,
-    },
+    defaultValues: defaultUseForm,
     resolver: zodResolver(ThreadSchema),
   });
+  const statusDialog = useSelector(
+    (state: RootState) => state.statusDialog.value
+  );
   const loggedUser = useSelector((state: RootState) => state.loggedUser.value);
   const dialog = useSelector((state: RootState) => state.dialog.value);
   const deleteDialog = useSelector(
@@ -51,6 +57,8 @@ export default function Home() {
   const { isFetching } = GetThreads(setThreads);
   const { mutateAsync: mutateCreateThread, isPending: isPendingCreateThread } =
     CreateThreads();
+  const { mutateAsync: mutateUpdateThread, isPending: isPendingUpdateThread } =
+    UpdateThread(threadId);
   const { mutateAsync: mutateCreateLike } = CreateLike();
   const { mutateAsync: mutateDeleteLike } = DeleteLike();
   const { mutateAsync: mutateDeleteThread, isPending: isPendingDeleteThread } =
@@ -72,8 +80,10 @@ export default function Home() {
   }
 
   function onCloseDialog() {
+    dispatch(setStatus("add"));
     setPreview(null);
-    reset();
+    reset(defaultUseForm);
+    setPreview(null);
     dispatch(open(false));
   }
 
@@ -85,6 +95,15 @@ export default function Home() {
     }
     return;
   }
+  async function handleSubmitEditHread(data: ThreadTypes) {
+    const response = await mutateUpdateThread(data);
+    if (response.success) {
+      setPreview(null);
+      reset(defaultUseForm);
+    }
+    return;
+  }
+
   function handleDeleteThread(threadId: string) {
     mutateDeleteThread(threadId);
     return;
@@ -156,6 +175,8 @@ export default function Home() {
                 handleLike={handleLike}
                 handleUnLike={handleUnLike}
                 setThreadId={setThreadId}
+                reset={reset}
+                setPreview={setPreview}
               />
             ))
             .reverse()}
@@ -167,7 +188,13 @@ export default function Home() {
         size="lg"
       >
         <DialogContent backgroundColor="black" border="1px solid #212121">
-          <form onSubmit={handleSubmit(handleSubmitThread)}>
+          <form
+            onSubmit={
+              statusDialog == "add"
+                ? handleSubmit(handleSubmitThread)
+                : handleSubmit(handleSubmitEditHread)
+            }
+          >
             <DialogBody
               marginTop="1rem"
               display="flex"
@@ -211,12 +238,13 @@ export default function Home() {
                   ref={inputFileRef}
                   hidden
                   onChange={onChangeInputFile}
+                  disabled={statusDialog == "add" ? false : true}
                 />
                 <LuImage
                   size="1.5rem"
-                  color="gray"
+                  color={statusDialog == "add" ? "white" : "grey"}
                   onClick={onClickInputFile}
-                  cursor="pointer"
+                  cursor={statusDialog == "add" ? "cursor" : "not-allowed"}
                 />
                 <Button
                   type="submit"
@@ -224,9 +252,13 @@ export default function Home() {
                   color="black"
                   borderRadius="1rem"
                   height="2rem"
-                  loading={isPendingCreateThread}
+                  loading={
+                    statusDialog == "add"
+                      ? isPendingCreateThread
+                      : isPendingUpdateThread
+                  }
                 >
-                  Post
+                  {statusDialog == "add" ? "Post" : "Save"}
                 </Button>
               </Box>
               {preview && (

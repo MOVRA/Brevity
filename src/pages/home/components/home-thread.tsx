@@ -8,26 +8,34 @@ import {
 import { openDelete } from "@/global/state/dialog/delete-dialog.slice";
 import { RootState } from "@/global/state/store";
 import { Post } from "@/types/thread";
+import { ThreadTypes } from "@/validator/thread";
 import { Box, Image, Text } from "@chakra-ui/react";
 import moment from "moment";
 import { useState } from "react";
+import { UseFormReset } from "react-hook-form";
 import { BsThreeDots } from "react-icons/bs";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { IoChatboxOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+import { open } from "@/global/state/dialog/dialog-slice";
+import { setStatus } from "@/global/state/dialog/status-dialog.slice";
 
 interface Props {
   thread: Post;
+  setPreview: (a: string | null) => void;
   handleLike: (a: string) => void;
   handleUnLike: (a: string) => void;
   setThreadId: (a: string) => void;
+  reset: UseFormReset<ThreadTypes>;
 }
 
 export default function HomeThread({
   thread,
+  setPreview,
   setThreadId,
   handleLike,
   handleUnLike,
+  reset,
 }: Props) {
   const user = useSelector((state: RootState) => state.loggedUser.value);
   const dispatch = useDispatch();
@@ -73,6 +81,13 @@ export default function HomeThread({
                 color="white"
                 cursor="pointer"
                 _hover={{ backgroundColor: "rgba(105, 105, 105, 0.5)" }}
+                onClick={() => {
+                  setPreview(thread?.file);
+                  dispatch(setStatus("edit"));
+                  dispatch(open(true));
+                  reset(thread);
+                  setThreadId(thread.id)
+                }}
               >
                 Edit
               </MenuItem>
@@ -95,7 +110,9 @@ export default function HomeThread({
         </Box>
         <Box display="flex" flexDirection="column" gap="0.8rem">
           <Text fontSize="0.9rem">{thread.content}</Text>
-          {thread.file && <Image src={thread.file} borderRadius="1rem" />}
+          {thread.file && (
+            <Image src={thread.file} borderRadius="1rem" width="100%" />
+          )}
           <Box display="flex" gap="1rem">
             {like ? (
               <Box display="flex" gap="0.7rem" alignItems="center">
