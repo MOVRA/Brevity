@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router";
 import { userMe } from "./api/user";
-import { AppDispatch } from "./global/store";
+import { AppDispatch } from "@/global/state/store";
 import { setUserLoggedIn } from "./global/state/user/user-slice";
 import Layout from "./layout/layout";
 import Follow from "./pages/follow/follow";
@@ -13,6 +13,7 @@ import Loader from "./pages/loader/loader";
 import Login from "./pages/login/login";
 import Profile from "./pages/profile/profile";
 import Search from "./pages/search/search";
+import Reply from "./pages/reply/reply";
 
 export default function App() {
   const [load, setLoad] = useState(true);
@@ -49,6 +50,7 @@ export default function App() {
       <Route path="/sign-in" element={<Login />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="/thread/:threadId" element={<Reply />} />
         <Route path="/search" element={<Search />} />
         <Route path="/follow" element={<Follow />} />
         <Route path="/profile" element={<Profile />} />

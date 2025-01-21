@@ -3,6 +3,7 @@ import {
   addThreadLike,
   deleteThread,
   threadById,
+  // threadById,
   threads,
   unlikeThread,
   updateThread,
@@ -28,11 +29,15 @@ export const GetThreads = (setThreads: (a: Post[]) => void) => {
   });
 };
 
-export const GetThreadId = (threadId: string) => {
+export const GetThreadById = (
+  setThread: (a: Post) => void,
+  threadId: string | undefined
+) => {
   return useQuery({
     queryKey: ["THREADBYID"],
     queryFn: async () => {
       const response = await threadById(threadId);
+      setThread(response.data);
       return response.data;
     },
     refetchOnWindowFocus: false,
@@ -52,11 +57,11 @@ export const CreateThreads = () => {
       toaster.success({ description: data.message });
       dispatch(open(false));
       queryClient.invalidateQueries({ queryKey: ["THREADS"] });
+      queryClient.invalidateQueries({ queryKey: ["THREADBYID"] });
     },
     onError: (data) => {
       toaster.error({ description: data.message });
       dispatch(open(false));
-      queryClient.invalidateQueries({ queryKey: ["THREADS"] });
     },
   });
 };
@@ -75,11 +80,11 @@ export const UpdateThread = (threadId: string) => {
       dispatch(open(false));
       dispatch(setStatus("add"));
       queryClient.invalidateQueries({ queryKey: ["THREADS"] });
+      queryClient.invalidateQueries({ queryKey: ["THREADBYID"] });
     },
     onError: (data) => {
       toaster.error({ description: data.message });
       dispatch(open(false));
-      queryClient.invalidateQueries({ queryKey: ["THREADS"] });
     },
   });
 };
@@ -117,10 +122,10 @@ export const DeleteThread = () => {
       toaster.success({ description: data.message });
       dispatch(openDelete(false));
       queryClient.invalidateQueries({ queryKey: ["THREADS"] });
+      queryClient.invalidateQueries({ queryKey: ["THREADBYID"] });
     },
     onError: (data) => {
       toaster.error({ description: data.message });
-      queryClient.invalidateQueries({ queryKey: ["THREADS"] });
     },
   });
 };

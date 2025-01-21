@@ -1,121 +1,22 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  DialogBody,
-  DialogCloseTrigger,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogRoot,
-} from "@/components/ui/dialog";
 import { SkeletonCircle, SkeletonText } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
+import ThreadBox from "@/global/components/thread-box";
+import ThreadDelete from "@/global/components/thread-delete";
+import ThreadForm from "@/global/components/thread-form";
 import { open } from "@/global/state/dialog/dialog-slice";
-import { AppDispatch, RootState } from "@/global/state/store";
+import { useThread } from "@/hooks/thread-hook";
 import { Post } from "@/types/thread";
-import { ThreadSchema, ThreadTypes } from "@/validator/thread";
-import { Box, Image, Input, Text, Textarea } from "@chakra-ui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { LuImage, LuX } from "react-icons/lu";
-import { useDispatch, useSelector } from "react-redux";
-import HomeThread from "./components/home-thread";
-import {
-  CreateLike,
-  CreateThreads,
-  DeleteLike,
-  DeleteThread,
-  GetThreads,
-  UpdateThread,
-} from "./hooks/home-tanstack";
-import { openDelete } from "@/global/state/dialog/delete-dialog.slice";
-import { setStatus } from "@/global/state/dialog/status-dialog.slice";
+import { Box, Text } from "@chakra-ui/react";
+import { useState } from "react";
+import { LuImage } from "react-icons/lu";
+import { GetThreads } from "../../tanstack/thread/thread-tanstack";
 
 export default function Home() {
   const [threads, setThreads] = useState<Post[]>();
-  const [threadId, setThreadId] = useState<string>("");
-  const [preview, setPreview] = useState<string | null | undefined>(null);
-  const inputFileRef = useRef<HTMLInputElement>(null);
-  const defaultUseForm = {
-    content: "",
-    file: null,
-  };
-  const { register, setValue, handleSubmit, reset } = useForm<ThreadTypes>({
-    defaultValues: defaultUseForm,
-    resolver: zodResolver(ThreadSchema),
-  });
-  const statusDialog = useSelector(
-    (state: RootState) => state.statusDialog.value
-  );
-  const loggedUser = useSelector((state: RootState) => state.loggedUser.value);
-  const dialog = useSelector((state: RootState) => state.dialog.value);
-  const deleteDialog = useSelector(
-    (state: RootState) => state.deleteDialog.value
-  );
-  const dispatch = useDispatch<AppDispatch>();
-  const { isFetching } = GetThreads(setThreads);
-  const { mutateAsync: mutateCreateThread, isPending: isPendingCreateThread } =
-    CreateThreads();
-  const { mutateAsync: mutateUpdateThread, isPending: isPendingUpdateThread } =
-    UpdateThread(threadId);
-  const { mutateAsync: mutateCreateLike } = CreateLike();
-  const { mutateAsync: mutateDeleteLike } = DeleteLike();
-  const { mutateAsync: mutateDeleteThread, isPending: isPendingDeleteThread } =
-    DeleteThread();
-  const skele = 5;
-
-  function onChangeInputFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file) {
-      setValue("file", file);
-      const objectUrl = URL.createObjectURL(file);
-      setPreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
-    }
-  }
-
-  function onClickInputFile() {
-    inputFileRef.current?.click();
-  }
-
-  function onCloseDialog() {
-    dispatch(setStatus("add"));
-    setPreview(null);
-    reset(defaultUseForm);
-    setPreview(null);
-    dispatch(open(false));
-  }
-
-  async function handleSubmitThread(data: ThreadTypes) {
-    const response = await mutateCreateThread(data);
-    if (response.success) {
-      setPreview(null);
-      reset();
-    }
-    return;
-  }
-  async function handleSubmitEditHread(data: ThreadTypes) {
-    const response = await mutateUpdateThread(data);
-    if (response.success) {
-      setPreview(null);
-      reset(defaultUseForm);
-    }
-    return;
-  }
-
-  function handleDeleteThread(threadId: string) {
-    mutateDeleteThread(threadId);
-    return;
-  }
-  function handleLike(threadId: string) {
-    mutateCreateLike(threadId);
-    return;
-  }
-  function handleUnLike(threadId: string) {
-    mutateDeleteLike(threadId);
-    return;
-  }
+  const { isFetching: isPendingGetThread } = GetThreads(setThreads);
+  const { handle, interaction, load, state } = useThread();
 
   return (
     <>
@@ -133,10 +34,10 @@ export default function Home() {
           gap="1rem"
           borderBottom="1px solid #212121"
           justifyContent="space-between"
-          onClick={() => dispatch(open(true))}
+          onClick={() => state.dispatch(open(true))}
         >
           <Box display="flex" alignItems="center" gap="1rem">
-            <Avatar src={loggedUser?.Profile?.file} />
+            <Avatar src={state.loggedUser?.Profile?.file} />
             <Text color="gray">What is happening!?</Text>
           </Box>
           <Box display="flex" alignItems="center" gap="1rem">
@@ -152,8 +53,8 @@ export default function Home() {
             </Button>
           </Box>
         </Box>
-        {isFetching &&
-          Array.from({ length: skele }).map((_, index) => (
+        {isPendingGetThread &&
+          Array.from({ length: load.skele }).map((_, index) => (
             <Box padding="1.3rem" key={index} borderBottom="1px solid #212121">
               <Box display="flex" gap="1rem">
                 <SkeletonCircle size="10" />
@@ -166,156 +67,29 @@ export default function Home() {
               <SkeletonText noOfLines={3} marginLeft="3.5rem" />
             </Box>
           ))}
-        {!isFetching &&
+        {!isPendingGetThread &&
           threads
             ?.map((thread: Post) => (
-              <HomeThread
+              <ThreadBox
                 key={thread.id}
                 thread={thread}
-                handleLike={handleLike}
-                handleUnLike={handleUnLike}
-                setThreadId={setThreadId}
-                reset={reset}
-                setPreview={setPreview}
+                handleLike={handle.handleLike}
+                handleUnLike={handle.handleUnLike}
+                setThreadId={state.setThreadId}
+                reset={state.reset}
+                setPreview={state.setPreview}
               />
             ))
             .reverse()}
       </Box>
-      <DialogRoot
-        open={dialog}
-        placement="top"
-        motionPreset="slide-in-bottom"
-        size="lg"
-      >
-        <DialogContent backgroundColor="black" border="1px solid #212121">
-          <form
-            onSubmit={
-              statusDialog == "add"
-                ? handleSubmit(handleSubmitThread)
-                : handleSubmit(handleSubmitEditHread)
-            }
-          >
-            <DialogBody
-              marginTop="1rem"
-              display="flex"
-              flexDirection="column"
-              gap="1rem"
-              padding="0rem 1rem"
-            >
-              <Box
-                display="flex"
-                gap="0.5rem"
-                borderBottom="1px solid #212121"
-                padding="1rem 0rem 0rem 0.5rem"
-              >
-                <Avatar src={loggedUser?.Profile?.file} />
-                <Textarea
-                  {...register("content")}
-                  color="white"
-                  border="none"
-                  placeholder="What is happening!?"
-                  fontSize="1rem"
-                  rows={4}
-                  resize="none"
-                  focusRingColor="transparent"
-                />
-              </Box>
-            </DialogBody>
-            <DialogFooter
-              padding="1rem 1.5rem 1rem 1.5rem"
-              display="flex"
-              flexDirection="column"
-              gap="2rem"
-            >
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                width="100%"
-                alignItems="center"
-              >
-                <Input
-                  type="file"
-                  ref={inputFileRef}
-                  hidden
-                  onChange={onChangeInputFile}
-                  disabled={statusDialog == "add" ? false : true}
-                />
-                <LuImage
-                  size="1.5rem"
-                  color={statusDialog == "add" ? "white" : "grey"}
-                  onClick={onClickInputFile}
-                  cursor={statusDialog == "add" ? "cursor" : "not-allowed"}
-                />
-                <Button
-                  type="submit"
-                  backgroundColor="white"
-                  color="black"
-                  borderRadius="1rem"
-                  height="2rem"
-                  loading={
-                    statusDialog == "add"
-                      ? isPendingCreateThread
-                      : isPendingUpdateThread
-                  }
-                >
-                  {statusDialog == "add" ? "Post" : "Save"}
-                </Button>
-              </Box>
-              {preview && (
-                <Box position="relative">
-                  <LuX
-                    color="white"
-                    style={{ position: "absolute", left: "95%", top: "1rem" }}
-                    onClick={() => setPreview(null)}
-                    cursor="pointer"
-                  />
-                  <Image src={preview} borderRadius="1rem" />
-                </Box>
-              )}
-            </DialogFooter>
-            <DialogCloseTrigger onClick={onCloseDialog} />
-          </form>
-        </DialogContent>
-      </DialogRoot>
-      <DialogRoot open={deleteDialog} size="lg">
-        <DialogContent
-          backgroundColor="black"
-          border="1px solid #212121"
-          color="white"
-        >
-          <DialogHeader>Are you sure?</DialogHeader>
-          <DialogBody>
-            Are you sure want to delete this thread? this action cannot be
-            resolve.
-          </DialogBody>
-          <DialogFooter>
-            <Button
-              onClick={() => handleDeleteThread(threadId)}
-              loading={isPendingDeleteThread}
-              backgroundColor="transparent"
-              border="1px solid red"
-              color="red"
-              borderRadius="1rem"
-              height="2rem"
-            >
-              Delete
-            </Button>
-            <Button
-              backgroundColor="transparent"
-              border="1px solid white"
-              color="white"
-              borderRadius="1rem"
-              height="2rem"
-              onClick={() => {
-                dispatch(openDelete(false));
-                setThreadId("");
-              }}
-            >
-              Cancel
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </DialogRoot>
+      <ThreadForm
+        state={state}
+        load={load}
+        interaction={interaction}
+        handle={handle}
+        threadId={null}
+      />
+      <ThreadDelete state={state} load={load} handle={handle} />
       <Toaster />
     </>
   );

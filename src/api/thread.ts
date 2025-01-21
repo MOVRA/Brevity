@@ -6,8 +6,8 @@ export const threads = async () => {
   return response.data;
 };
 
-export const threadById = async (threadId: string) => {
-  const response = await Axios.get(`/thread/${threadId}`);
+export const threadById = async (threadId: string | undefined) => {
+  const response = await Axios.get(`/threads/${threadId}`);
   return response.data;
 };
 
