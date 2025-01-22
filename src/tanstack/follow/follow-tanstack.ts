@@ -10,8 +10,8 @@ export const GetFollow = (
     queryKey: ["FOLLOW"],
     queryFn: async () => {
       const response = await follow(id);
-      setFollow(response.data[0]);
-      return response.data[0];
+      setFollow(response.data);
+      return response.data;
     },
     refetchOnWindowFocus: false,
   });
@@ -32,7 +32,7 @@ export const DeleteFollow = () => {
     mutationKey: ["DELETEFOLLOW"],
     mutationFn: async (id: string) => {
       const response = await unfollowUser(id);
-      return response;
+      return response.data;
     },
   });
 };

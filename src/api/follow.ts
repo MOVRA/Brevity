@@ -11,6 +11,6 @@ export const followUser = async (userId: string) => {
 };
 
 export const unfollowUser = async (userId: string) => {
-  const response = await Axios.delete(`/follow/${userId}`);
+  const response = await Axios.delete(`/follows/${userId}`);
   return response.data;
 };

@@ -1,18 +1,15 @@
+import UserBox from "@/global/components/follow-user-box";
 import { RootState } from "@/global/state/store";
-import { Box, Spinner, Text } from "@chakra-ui/react";
-import { Tabs } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import { useState } from "react";
-import { User } from "@/types/follow";
 import { GetFollow } from "@/tanstack/follow/follow-tanstack";
-import { Avatar } from "@/components/ui/avatar";
+import { User } from "@/types/follow";
+import { Box, Spinner, Tabs } from "@chakra-ui/react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Follow() {
   const [follow, setFollow] = useState<User>();
   const me = useSelector((state: RootState) => state.loggedUser.value);
   const { isFetching } = GetFollow(me?.id, setFollow);
-
-  console.log(follow);
 
   return (
     <Box width="100%">
@@ -52,50 +49,14 @@ export default function Follow() {
         {!isFetching && (
           <>
             <Tabs.Content value="followers">
-              {follow?.Follower.map(() => (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  padding="1rem 0rem"
-                >
-                  <Box display="flex" gap="0.7rem">
-                    <Avatar  />
-                    <Box display="flex" gap="0.5rem">
-                      <Text as="h1" color="white">
-                        User
-                      </Text>
-                      <Text as="h1" color="grey" fontWeight="light">
-                        @User
-                      </Text>
-                    </Box>
-                  </Box>
-                  {/* {f.followedByYou && (
-                    <Button
-                      color="gray"
-                      backgroundColor="transparent"
-                      borderRadius="1rem"
-                      border="1px solid gray"
-                      height="2rem"
-                    >
-                      Unfollow
-                    </Button>
-                  )}
-                  {!f.followedByYou && (
-                    <Button
-                      color="white"
-                      backgroundColor="transparent"
-                      borderRadius="1rem"
-                      border="1px solid white"
-                      height="2rem"
-                    >
-                      Follow
-                    </Button>
-                  )} */}
-                </Box>
+              {follow?.Follower.map((f) => (
+                <UserBox f={f} key={f.id} type={"follower"} />
               ))}
             </Tabs.Content>
             <Tabs.Content value="following">
-              <Text color="white">tes2</Text>
+              {follow?.Following.map((f) => (
+                <UserBox f={f} key={f.id} type={"following"} />
+              ))}
             </Tabs.Content>
           </>
         )}
