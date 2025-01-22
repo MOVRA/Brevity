@@ -1,7 +1,7 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { InputGroup } from "@/components/ui/input-group";
-import { GetUsers } from "@/tanstack/thread/thread-tanstack";
+import { GetUsers } from "@/tanstack/users/user-tanstack";
 import { Users } from "@/types/user";
 import { Box, Input, Spinner, Text } from "@chakra-ui/react";
 import { useState } from "react";
