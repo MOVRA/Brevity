@@ -65,7 +65,7 @@ export default function LeftBar() {
             })}
           >
             <LuSearch />
-            Like
+            Search
           </NavLink>
           <NavLink
             to="/follow"

@@ -55,7 +55,12 @@ export default function ThreadBox({
           display="flex"
           color="white"
           gap="1rem"
+          borderRadius={!thread.parent.file ? "1rem" : "0"}
           padding="1.3rem"
+          margin={!thread.parent.file ? "1rem" : "0"}
+          backgroundColor={
+            !thread.parent.file ? "rgba(126, 126, 126, 0.14)" : "black"
+          }
         >
           <Box
             display="flex"
@@ -64,12 +69,14 @@ export default function ThreadBox({
             alignItems="center"
           >
             <Avatar src={thread.parent.author.Profile.file} />
-            <Box
-              color="white"
-              width="2px"
-              backgroundColor="gray"
-              height="100%"
-            ></Box>
+            {thread.parent.file && (
+              <Box
+                color="white"
+                width="2px"
+                backgroundColor="gray"
+                height="100%"
+              ></Box>
+            )}
           </Box>
           <Box display="flex" flexDirection="column" gap="0.5rem" width="100%">
             <Box
@@ -128,6 +135,14 @@ export default function ThreadBox({
               <Text color="gray" fontWeight="light" fontSize="0.8rem">
                 &#9679; {moment(thread.createdAt).startOf("minutes").fromNow()}
               </Text>
+              {thread.parent && (
+                <Text fontSize="0.8rem">
+                  replying to{" "}
+                  <span style={{ color: "rgb(36, 116, 255)" }}>
+                    @{thread.parent.author.username}
+                  </span>
+                </Text>
+              )}
             </Box>
             <MenuRoot positioning={{ placement: "left-start" }}>
               {user?.id == thread.authorId ? (

@@ -16,6 +16,20 @@ import { useDispatch } from "react-redux";
 import { toaster } from "@/components/ui/toaster";
 import { openDelete } from "@/global/state/dialog/delete-dialog.slice";
 import { setStatus } from "@/global/state/dialog/status-dialog.slice";
+import { users } from "@/api/user";
+import { Users } from "@/types/user";
+
+export const GetUsers = (setUsers: (a: Users[]) => void) => {
+  return useQuery({
+    queryKey: ["USERS"],
+    queryFn: async () => {
+      const response = await users();
+      setUsers(response.data);
+      return response.data;
+    },
+    refetchOnWindowFocus: false,
+  });
+};
 
 export const GetThreads = (setThreads: (a: Post[]) => void) => {
   return useQuery({

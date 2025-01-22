@@ -26,3 +26,23 @@ export type User =
       username: string;
     }
   | undefined;
+
+export type UsersProfile = {
+  id: string;
+  bio: string;
+  file: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Users = {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  profile: UsersProfile;
+  followedByYou: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
