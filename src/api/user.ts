@@ -10,7 +10,7 @@ export const users = async () => {
   return response.data;
 };
 
-export const userById = async (userId: string) => {
+export const userById = async (userId: string | undefined) => {
   const response = await Axios.get(`/users/${userId}`);
   return response.data;
 };

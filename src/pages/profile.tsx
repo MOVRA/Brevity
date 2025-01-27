@@ -1,31 +1,54 @@
+// import { threadByUserId } from "@/api/thread";
+// import { userById } from "@/api/user";
+import bgBanner from "@/assets/pngtree-abstract-backgrouns-set-grunge-texture-minimalistic-art-brush-strokes-style-design-image_739359.jpg";
+import ThreadBox from "@/components/custom/thread-box";
+import ThreadDelete from "@/components/custom/thread-delete";
+import ThreadForm from "@/components/custom/thread-form";
+import ThreadSkele from "@/components/custom/thread-skele";
 import { Avatar } from "@/components/ui/avatar";
+import { Toaster } from "@/components/ui/toaster";
 import { RootState } from "@/global/state/store";
-import { GetUserById } from "@/tanstack/user-tanstack";
+import { useThread } from "@/hooks/thread-hook";
+import { GetThreadByUserId } from "@/tanstack/thread-tanstack";
+// import { GetThreadByUserId } from "@/tanstack/thread-tanstack";
+// import { GetUserById } from "@/tanstack/user-tanstack";
+import { Post } from "@/types/thread";
+import { User } from "@/types/user";
 import { Box, Image, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import bgBanner from "@/assets/pngtree-abstract-backgrouns-set-grunge-texture-minimalistic-art-brush-strokes-style-design-image_739359.jpg";
-import ThreadSkele from "@/components/custom/thread-skele";
-import ThreadBox from "@/components/custom/thread-box";
-import { useThread } from "@/hooks/thread-hook";
-import { Post } from "@/types/thread";
-import ThreadForm from "@/components/custom/thread-form";
-import ThreadDelete from "@/components/custom/thread-delete";
-import { Toaster } from "@/components/ui/toaster";
-import { GetThreadByUserId } from "@/tanstack/thread-tanstack";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 
 export default function Profile() {
+  const params = useParams();
   const user = useSelector((state: RootState) => state.loggedUser.value);
+  const [isPendingGetThreadByUserId, setIsPendingGetThreadByUserId] =
+    useState(true);
+  const [userProfile, setUserProfile] = useState<User>();
+  // const [id, setId] = useState<string | undefined>("");
   const [thread, setThread] = useState<Post[]>();
-  const { data } = GetUserById(user?.id);
+  // const { data } = GetUserById(id);
   const navigate = useNavigate();
   const { handle, interaction, load, state } = useThread();
-  const { isFetching: isPendingGetThreadByUserId } = GetThreadByUserId(
-    setThread,
-    user?.id
-  );
+  // const { isFetching: isPendingGetThreadByUserId } = GetThreadByUserId(
+  //   setThread,
+  //   id
+  // );
+
+  useEffect(() => {
+    function GetProfileData() {
+      setUserProfile(user);
+      if (!params.userId) {
+        const { isSuccess } = GetThreadByUserId(setThread, user?.id);
+        if (isSuccess) {
+          setIsPendingGetThreadByUserId(false);
+        }
+      }
+      return;
+    }
+    GetProfileData();
+  }, [params, user]);
 
   return (
     <Box width="100%">
@@ -39,7 +62,7 @@ export default function Profile() {
       >
         <FaArrowLeft color="White" />
         <Text as="h1" fontWeight="semibold" color="white" fontSize="1.2rem">
-          {user?.name}
+          {userProfile?.name}
         </Text>
       </Box>
       <Box display="flex" flexDirection="column">
@@ -52,7 +75,7 @@ export default function Profile() {
             position="relative"
           />
           <Avatar
-            src={data?.Profile?.file}
+            src={userProfile?.Profile?.file}
             size="2xl"
             position="absolute"
             top="13rem"
@@ -69,13 +92,13 @@ export default function Profile() {
         >
           <Box display="flex" flexDirection="column" gap="0.3rem">
             <Text as="h1" color="white" fontWeight="semibold" fontSize="1.2rem">
-              {user?.name}
+              {userProfile?.name}
             </Text>
             <Text color="gray" fontWeight="light" fontSize="0.9rem">
-              @{user?.username}
+              @{userProfile?.username}
             </Text>
             <Text color="white" fontSize="0.8rem">
-              {user?.Profile?.bio}
+              {userProfile?.Profile?.bio}
             </Text>
           </Box>
           <Box display="flex" gap="0.8rem">
