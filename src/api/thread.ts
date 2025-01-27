@@ -11,6 +11,11 @@ export const threadById = async (threadId: string | undefined) => {
   return response.data;
 };
 
+export const threadByUserId = async (userId: string | undefined) => {
+  const response = await Axios.get(`/threads/user/${userId}`);
+  return response.data;
+};
+
 export const addThread = async (data: ThreadTypes) => {
   const response = await AxiosFormData.post("/threads", data);
   return response.data;

@@ -3,6 +3,7 @@ import {
   addThreadLike,
   deleteThread,
   threadById,
+  threadByUserId,
   // threadById,
   threads,
   unlikeThread,
@@ -58,6 +59,21 @@ export const GetThreadById = (
   });
 };
 
+export const GetThreadByUserId = (
+  setThread: (a: Post[]) => void,
+  userId: string | undefined
+) => {
+  return useQuery({
+    queryKey: ["THREADBYUSERID"],
+    queryFn: async () => {
+      const response = await threadByUserId(userId);
+      setThread(response.data);
+      return response.data;
+    },
+    refetchOnWindowFocus: false,
+  });
+};
+
 export const CreateThreads = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
@@ -95,6 +111,7 @@ export const UpdateThread = (threadId: string) => {
       dispatch(setStatus("add"));
       queryClient.invalidateQueries({ queryKey: ["THREADS"] });
       queryClient.invalidateQueries({ queryKey: ["THREADBYID"] });
+      queryClient.invalidateQueries({ queryKey: ["THREADBYUSERID"] });
     },
     onError: (data) => {
       toaster.error({ description: data.message });

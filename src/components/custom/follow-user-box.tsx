@@ -1,6 +1,6 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { CreateFollow, DeleteFollow } from "@/tanstack/follow/follow-tanstack";
+import { CreateFollow, DeleteFollow } from "@/tanstack/follow-tanstack";
 import { FollowRelation } from "@/types/follow";
 import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";

@@ -1,11 +1,11 @@
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import ThreadBox from "@/global/components/thread-box";
-import ThreadDelete from "@/global/components/thread-delete";
-import ThreadForm from "@/global/components/thread-form";
+import ThreadBox from "@/components/custom/thread-box";
+import ThreadDelete from "@/components/custom/thread-delete";
+import ThreadForm from "@/components/custom/thread-form";
 import { open } from "@/global/state/dialog/dialog-slice";
 import { useThread } from "@/hooks/thread-hook";
-import { GetThreadById } from "@/tanstack/thread/thread-tanstack";
+import { GetThreadById } from "@/tanstack/thread-tanstack";
 import { Post, UseThread } from "@/types/thread";
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import { useState } from "react";

@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import { LuDoorOpen, LuHeart, LuHouse, LuSearch } from "react-icons/lu";
-import { NavLink } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { CgProfile } from "react-icons/cg";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 
 export default function LeftBar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Box
@@ -28,7 +30,7 @@ export default function LeftBar() {
           justifyContent="center"
           padding="1rem"
         >
-          <Text as="h1" color="white" fontWeight="bold">
+          <Text as="h1" color="white" fontWeight="bold" fontSize="1.5rem">
             BREVITY
           </Text>
         </Box>
@@ -103,7 +105,13 @@ export default function LeftBar() {
           </NavLink>
           <Button
             marginTop="1rem"
-            onClick={() => dispatch(open(true))}
+            onClick={() => {
+              if (location.pathname != "/") {
+                navigate("/");
+                return;
+              }
+              dispatch(open(true));
+            }}
             backgroundColor="white"
             color="black"
             width="100%"

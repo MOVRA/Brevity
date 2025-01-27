@@ -1,6 +1,6 @@
 import { InputGroup } from "@/components/ui/input-group";
-import SearchUserBox from "@/global/components/search-user-box";
-import { GetUsers } from "@/tanstack/users/user-tanstack";
+import SearchUserBox from "@/components/custom/search-user-box";
+import { GetUsers } from "@/tanstack/user-tanstack";
 import { Users } from "@/types/user";
 import { Box, Input, Spinner } from "@chakra-ui/react";
 import { useState } from "react";

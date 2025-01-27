@@ -1,7 +1,7 @@
 import { isLoggedIn } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { MutateLogin } from "@/pages/login/hooks/login-tanstack";
+import { MutateLogin } from "@/tanstack/login-tanstack";
 import { LoginSchema, LoginType } from "@/validator/auth";
 import { Box, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";

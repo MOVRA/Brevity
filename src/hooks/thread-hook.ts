@@ -12,7 +12,7 @@ import {
   DeleteLike,
   DeleteThread,
   UpdateThread,
-} from "@/tanstack/thread/thread-tanstack";
+} from "@/tanstack/thread-tanstack";
 
 export function useThread() {
   const [threadId, setThreadId] = useState<string>("");

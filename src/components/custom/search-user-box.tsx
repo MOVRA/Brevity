@@ -3,7 +3,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { Button } from "@/components/ui/button";
 import { Users } from "@/types/user";
 import { useState } from "react";
-import { CreateFollow, DeleteFollow } from "@/tanstack/follow/follow-tanstack";
+import { CreateFollow, DeleteFollow } from "@/tanstack/follow-tanstack";
 
 export default function SearchUserBox({ f }: { f: Users }) {
   const [follow, setFollow] = useState<boolean>(() => {

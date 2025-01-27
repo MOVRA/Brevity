@@ -7,7 +7,7 @@ import {
   DialogRoot,
 } from "@/components/ui/dialog";
 import { Handle, Load, State } from "@/types/thread";
-import { openDelete } from "../state/dialog/delete-dialog.slice";
+import { openDelete } from "../../global/state/dialog/delete-dialog.slice";
 
 export default function ThreadDelete({
   state,

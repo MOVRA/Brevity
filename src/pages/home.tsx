@@ -1,17 +1,17 @@
+import ThreadBox from "@/components/custom/thread-box";
+import ThreadDelete from "@/components/custom/thread-delete";
+import ThreadForm from "@/components/custom/thread-form";
+import ThreadSkele from "@/components/custom/thread-skele";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { SkeletonCircle, SkeletonText } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
-import ThreadBox from "@/global/components/thread-box";
-import ThreadDelete from "@/global/components/thread-delete";
-import ThreadForm from "@/global/components/thread-form";
 import { open } from "@/global/state/dialog/dialog-slice";
 import { useThread } from "@/hooks/thread-hook";
 import { Post } from "@/types/thread";
 import { Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuImage } from "react-icons/lu";
-import { GetThreads } from "../../tanstack/thread/thread-tanstack";
+import { GetThreads } from "../tanstack/thread-tanstack";
 
 export default function Home() {
   const [threads, setThreads] = useState<Post[]>();
@@ -53,20 +53,7 @@ export default function Home() {
             </Button>
           </Box>
         </Box>
-        {isPendingGetThread &&
-          Array.from({ length: load.skele }).map((_, index) => (
-            <Box padding="1.3rem" key={index} borderBottom="1px solid #212121">
-              <Box display="flex" gap="1rem">
-                <SkeletonCircle size="10" />
-                <Box display="flex" alignItems="center" marginBottom="1rem">
-                  <SkeletonText noOfLines={1} width="5rem" />
-                  <SkeletonText noOfLines={1} width="5rem" />
-                  <SkeletonText noOfLines={1} width="5rem" />
-                </Box>
-              </Box>
-              <SkeletonText noOfLines={3} marginLeft="3.5rem" />
-            </Box>
-          ))}
+        {isPendingGetThread && <ThreadSkele />}
         {!isPendingGetThread &&
           threads
             ?.map((thread: Post) => (

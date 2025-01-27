@@ -7,13 +7,13 @@ import { userMe } from "./api/user";
 import { AppDispatch } from "@/global/state/store";
 import { setUserLoggedIn } from "./global/state/user/user-slice";
 import Layout from "./layout/layout";
-import Follow from "./pages/follow/follow";
-import Home from "./pages/home/home";
-import Loader from "./pages/loader/loader";
-import Login from "./pages/login/login";
-import Profile from "./pages/profile/profile";
-import Search from "./pages/search/search";
-import Reply from "./pages/reply/reply";
+import Follow from "./pages/follow";
+import Home from "./pages/home";
+import Loader from "./pages/loader";
+import Login from "./pages/login";
+import Profile from "./pages/profile";
+import Search from "./pages/search";
+import Reply from "./pages/reply";
 
 export default function App() {
   const [load, setLoad] = useState(true);

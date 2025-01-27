@@ -1,6 +1,6 @@
-import UserBox from "@/global/components/follow-user-box";
+import UserBox from "@/components/custom/follow-user-box";
 import { RootState } from "@/global/state/store";
-import { GetFollow } from "@/tanstack/follow/follow-tanstack";
+import { GetFollow } from "@/tanstack/follow-tanstack";
 import { User } from "@/types/follow";
 import { Box, Spinner, Tabs } from "@chakra-ui/react";
 import { useState } from "react";
