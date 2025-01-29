@@ -19,7 +19,7 @@ import { IoChatboxOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { open } from "@/global/state/dialog/dialog-slice";
 import { setStatus } from "@/global/state/dialog/status-dialog.slice";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 interface Props {
   thread: Post;
@@ -46,12 +46,12 @@ export default function ThreadBox({
   const [totalLike, setTotalLike] = useState(() => {
     return thread.likeCount;
   });
+  const navigate = useNavigate();
 
   return (
     <>
       {thread.parent && (
         <Box
-          key={thread.id}
           display="flex"
           color="white"
           gap="1rem"
@@ -68,7 +68,11 @@ export default function ThreadBox({
             gap="2rem"
             alignItems="center"
           >
-            <Avatar src={thread.parent.author.Profile.file} />
+            <Avatar
+              src={thread.parent.author.Profile.file}
+              cursor="pointer"
+              onClick={() => navigate(`/profile/${thread.parent?.authorId}`)}
+            />
             {thread.parent.file && (
               <Box
                 color="white"

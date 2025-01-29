@@ -57,13 +57,13 @@ export default function LeftBar() {
             style={({ isActive }) => ({
               color: "white",
               backgroundColor: isActive
-                ? "rgba(93, 93, 93, 0.2)"
+                ? "rgba(93, 93, 93, 0.5)"
                 : "transparent",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
               padding: "0.5rem",
-              borderRadius: "1rem",
+              borderRadius: "0.7rem",
             })}
           >
             <LuSearch />
@@ -74,13 +74,13 @@ export default function LeftBar() {
             style={({ isActive }) => ({
               color: "white",
               backgroundColor: isActive
-                ? "rgba(93, 93, 93, 0.2)"
+                ? "rgba(93, 93, 93, 0.5)"
                 : "transparent",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
               padding: "0.5rem",
-              borderRadius: "1rem",
+              borderRadius: "0.7rem",
             })}
           >
             <LuHeart />
@@ -91,13 +91,13 @@ export default function LeftBar() {
             style={({ isActive }) => ({
               color: "white",
               backgroundColor: isActive
-                ? "rgba(93, 93, 93, 0.2)"
+                ? "rgba(93, 93, 93, 0.5)"
                 : "transparent",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
               padding: "0.5rem",
-              borderRadius: "1rem",
+              borderRadius: "0.7rem",
             })}
           >
             <CgProfile />

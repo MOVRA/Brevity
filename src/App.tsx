@@ -28,8 +28,8 @@ export default function App() {
       try {
         const user = await userMe();
         dispatch(setUserLoggedIn(user.data));
-      } catch {
-        setLoad(false);
+      } catch (error) {
+        console.log(error);
         return;
       } finally {
         setLoad(false);
@@ -54,6 +54,7 @@ export default function App() {
         <Route path="/search" element={<Search />} />
         <Route path="/follow" element={<Follow />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:userId" element={<Profile />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
