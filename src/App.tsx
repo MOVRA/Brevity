@@ -51,7 +51,7 @@ export default function App() {
     <Routes>
       <Route path="/sign-in" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<Forgot />} />
+      <Route path="/forgot-password/:userId" element={<Forgot />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/thread/:threadId" element={<Reply />} />

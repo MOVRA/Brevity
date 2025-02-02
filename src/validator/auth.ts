@@ -1,5 +1,22 @@
 import z from "zod";
 
+export const notifSchema = z.object({
+  to: z.string().min(1, "Email can't be empty"),
+  subject: z.string(),
+  text: z.string(),
+  url: z.string(),
+});
+
+export type NotifType = z.infer<typeof notifSchema>;
+
+export const passwordSchema = z.object({
+  password: z
+    .string()
+    .min(8, "Your new password must be at least 5 characters long"),
+});
+
+export type PasswordType = z.infer<typeof passwordSchema>;
+
 export const RegisterSchema = z.object({
   name: z.string().min(1, "Name can't be empty"),
   username: z.string().min(1, "Username can't be empty"),
