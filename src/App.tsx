@@ -16,6 +16,7 @@ import Search from "./pages/search";
 import Reply from "./pages/reply";
 import Register from "./pages/register";
 import Forgot from "./pages/forgot";
+import Notif from "./pages/notif";
 
 export default function App() {
   const [load, setLoad] = useState(true);
@@ -51,7 +52,8 @@ export default function App() {
     <Routes>
       <Route path="/sign-in" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password/:userId" element={<Forgot />} />
+      <Route path="/reset/:userId" element={<Forgot />} />
+      <Route path="/send-notif" element={<Notif />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/thread/:threadId" element={<Reply />} />

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { Toaster } from "@/components/ui/toaster";
 import { MutatePassword } from "@/tanstack/register-tanstack";
 import { passwordSchema, PasswordType } from "@/validator/auth";
 import { Box, Input, Text } from "@chakra-ui/react";
@@ -53,6 +54,7 @@ export default function Forgot() {
           </Button>
         </Box>
       </form>
+      <Toaster />
     </Box>
   );
 }

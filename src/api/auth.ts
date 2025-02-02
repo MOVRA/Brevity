@@ -22,7 +22,7 @@ export const updatePassword = async (
   data: PasswordType,
   userId: string | undefined
 ) => {
-  const response = await AxiosAppJson.post(`/users/password/${userId}`, data);
+  const response = await AxiosAppJson.patch(`/reset/password/${userId}`, data);
   return response.data;
 };
 

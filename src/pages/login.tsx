@@ -65,7 +65,10 @@ export default function Login() {
             <Link to="/register" style={{ fontSize: "0.7rem", color: "gray" }}>
               Don't have an account?
             </Link>
-            <Link to="/forgot" style={{ fontSize: "0.7rem", color: "gray" }}>
+            <Link
+              to="/send-notif"
+              style={{ fontSize: "0.7rem", color: "gray" }}
+            >
               Forgot password?
             </Link>
           </Box>

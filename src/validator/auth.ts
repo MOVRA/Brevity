@@ -12,7 +12,7 @@ export type NotifType = z.infer<typeof notifSchema>;
 export const passwordSchema = z.object({
   password: z
     .string()
-    .min(8, "Your new password must be at least 5 characters long"),
+    .min(8, "Your new password must be at least 8 characters long"),
 });
 
 export type PasswordType = z.infer<typeof passwordSchema>;
