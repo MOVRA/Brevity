@@ -122,7 +122,11 @@ export default function ThreadBox({
         gap="1rem"
         padding="1.3rem"
       >
-        <Avatar src={thread.author.Profile.file} />
+        <Avatar
+          src={thread.author.Profile.file}
+          onClick={() => navigate(`/profile/${thread.authorId}`)}
+          cursor="pointer"
+        />
         <Box display="flex" flexDirection="column" gap="0.5rem" width="100%">
           <Box
             display="flex"
