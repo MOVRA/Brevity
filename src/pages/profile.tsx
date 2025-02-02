@@ -26,7 +26,7 @@ import { User } from "@/types/user";
 import { userSchema, UserType } from "@/validator/user";
 import { Box, Image, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -90,9 +90,11 @@ export default function Profile() {
         setUpdate(!update);
       }
     } catch (error) {
-      toaster.error({
-        title: (error as AxiosError).response?.data.message,
-      });
+      if (isAxiosError(error)) {
+        toaster.error({
+          title: error.response?.data.message,
+        });
+      }
     } finally {
       setPreview(null);
       setEditDialog(false);

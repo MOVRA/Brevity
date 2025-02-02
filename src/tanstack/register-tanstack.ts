@@ -2,7 +2,7 @@ import { register, sendNotif, updatePassword } from "@/api/auth";
 import { toaster } from "@/components/ui/toaster";
 import { NotifType, PasswordType, registerType } from "@/validator/auth";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError, AxiosResponse } from "axios";
+import { isAxiosError } from "axios";
 import { useNavigate } from "react-router";
 
 export function MutateRegister() {
@@ -19,10 +19,12 @@ export function MutateRegister() {
       });
       navigate("/sign-in");
     },
-    onError: (data) => {
-      toaster.error({
-        title: (data as AxiosError).response?.data.message,
-      });
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        toaster.error({
+          title: error.response?.data.message,
+        });
+      }
     },
   });
 }
@@ -41,10 +43,12 @@ export function MutatePassword(userId: string | undefined) {
       });
       navigate("/sign-in");
     },
-    onError: (data) => {
-      toaster.error({
-        title: (data as AxiosError).response?.data.message,
-      });
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        toaster.error({
+          title: error.response?.data.message,
+        });
+      }
     },
   });
 }
@@ -61,10 +65,12 @@ export function MutateNotif() {
         title: data.message,
       });
     },
-    onError: (data) => {
-      toaster.error({
-        title: (data as AxiosError).response?.data.message,
-      });
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        toaster.error({
+          title: error.response?.data.message,
+        });
+      }
     },
   });
 }

@@ -3,6 +3,7 @@ import { toaster } from "@/components/ui/toaster";
 import { LoginResponse } from "@/types/auth";
 import { LoginType } from "@/validator/auth";
 import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 
 export const MutateLogin = () => {
   return useMutation({
@@ -13,10 +14,12 @@ export const MutateLogin = () => {
     onSuccess: (data: LoginResponse) => {
       return data.data;
     },
-    onError: (data) => {
-      toaster.error({
-        title: (data as AxiosError).response?.data.message,
-      });
+    onError: (error) => {
+      if (isAxiosError(error)) {
+        toaster.error({
+          title: error.response?.data.message,
+        });
+      }
     },
   });
 };

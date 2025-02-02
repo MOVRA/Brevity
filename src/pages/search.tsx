@@ -13,7 +13,7 @@ export default function Search() {
   const [searched, setSearched] = useState<boolean>(false);
   const { isFetching } = GetUsers(setUsers);
 
-  function handleFilter(e) {
+  function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
     const search = e.target.value;
     setItem(search);
 
