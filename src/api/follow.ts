@@ -5,12 +5,12 @@ export const follow = async (userId: string | undefined) => {
   return response.data;
 };
 
-export const followUser = async (userId: string) => {
+export const followUser = async (userId: string | undefined) => {
   const response = await Axios.post(`/follows/${userId}`);
   return response.data;
 };
 
-export const unfollowUser = async (userId: string) => {
+export const unfollowUser = async (userId: string | undefined) => {
   const response = await Axios.delete(`/follows/${userId}`);
   return response.data;
 };

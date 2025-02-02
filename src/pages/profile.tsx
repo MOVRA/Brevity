@@ -20,6 +20,7 @@ import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 import { toaster, Toaster } from "@/components/ui/toaster";
 import { RootState } from "@/global/state/store";
 import { useThread } from "@/hooks/thread-hook";
+import { CreateFollow, DeleteFollow } from "@/tanstack/follow-tanstack";
 import { Post } from "@/types/thread";
 import { User } from "@/types/user";
 import { userSchema, UserType } from "@/validator/user";
@@ -34,6 +35,11 @@ import { useNavigate, useParams } from "react-router";
 
 export default function Profile() {
   const params = useParams();
+  const [follow, setFollow] = useState<boolean>(false);
+  const { mutateAsync: mutateCreateFollow, isPending: isPendingCreateFollow } =
+    CreateFollow();
+  const { mutateAsync: mutateDeleteFollow, isPending: isPendingDeleteFollow } =
+    DeleteFollow();
   const inputFile = useRef<HTMLInputElement>(null);
   const [users, setUsers] = useState<User>();
   const [preview, setPreview] = useState<string | undefined | null>(null);
@@ -104,6 +110,7 @@ export default function Profile() {
           setUsers(userData.data);
           const threadData = await threadByUserId(params.userId);
           setThread(threadData.data);
+          setFollow(userData.data.followedByYou);
           reset(userData.data);
           return;
         }
@@ -126,6 +133,16 @@ export default function Profile() {
     }
     GetProfileData();
   }, [params, user, update]);
+
+  async function handleFollow(id: string | undefined) {
+    await mutateCreateFollow(id);
+    setFollow(true);
+  }
+
+  async function handleUnFollow(id: string | undefined) {
+    await mutateDeleteFollow(id);
+    setFollow(false);
+  }
 
   return (
     <Box width="100%">
@@ -251,11 +268,20 @@ export default function Profile() {
                 color="white"
                 borderRadius="2rem"
                 height="2rem"
+                loading={follow ? isPendingDeleteFollow : isPendingCreateFollow}
                 onClick={() =>
-                  users?.id != user?.id ? "" : setEditDialog(true)
+                  users?.id != user?.id
+                    ? follow
+                      ? handleUnFollow(users?.id)
+                      : handleFollow(users?.id)
+                    : setEditDialog(true)
                 }
               >
-                {users?.id != user?.id ? "Follow" : "Edit"}
+                {users?.id != user?.id
+                  ? follow
+                    ? "Followed"
+                    : "Follow"
+                  : "Edit"}
               </Button>
             </Skeleton>
           </Box>

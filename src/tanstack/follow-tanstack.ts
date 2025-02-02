@@ -20,7 +20,7 @@ export const GetFollow = (
 export const CreateFollow = () => {
   return useMutation({
     mutationKey: ["CREATEFOLLOW"],
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: string | undefined) => {
       const response = await followUser(id);
       return response.data;
     },
@@ -30,7 +30,7 @@ export const CreateFollow = () => {
 export const DeleteFollow = () => {
   return useMutation({
     mutationKey: ["DELETEFOLLOW"],
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: string | undefined) => {
       const response = await unfollowUser(id);
       return response.data;
     },
