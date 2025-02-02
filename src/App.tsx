@@ -14,6 +14,8 @@ import Login from "./pages/login";
 import Profile from "./pages/profile";
 import Search from "./pages/search";
 import Reply from "./pages/reply";
+import Register from "./pages/register";
+import Forgot from "./pages/forgot";
 
 export default function App() {
   const [load, setLoad] = useState(true);
@@ -48,6 +50,8 @@ export default function App() {
   return (
     <Routes>
       <Route path="/sign-in" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<Forgot />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/thread/:threadId" element={<Reply />} />

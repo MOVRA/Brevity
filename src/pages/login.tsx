@@ -7,7 +7,7 @@ import { Box, Input, Text } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Cookies from "js-cookie";
 import { useForm } from "react-hook-form";
-import { Navigate } from "react-router";
+import { Link, Navigate } from "react-router";
 
 export default function Login() {
   const {
@@ -61,6 +61,14 @@ export default function Login() {
           >
             <Input type="password" {...register("password")} />
           </Field>
+          <Box display="flex" justifyContent="space-between">
+            <Link to="/register" style={{ fontSize: "0.7rem", color: "gray" }}>
+              Don't have an account?
+            </Link>
+            <Link to="/forgot" style={{ fontSize: "0.7rem", color: "gray" }}>
+              Forgot password?
+            </Link>
+          </Box>
           <Button
             backgroundColor="white"
             color="black"
