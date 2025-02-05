@@ -22,13 +22,21 @@ export default function Home() {
     <>
       <Box width="100%">
         <Box padding="1rem">
-          <Text as="h1" fontWeight="semibold" color="white" fontSize="1.2rem">
+          <Text
+            as="h1"
+            display="none"
+            md={{ display: "flex" }}
+            fontWeight="semibold"
+            color="white"
+            fontSize="1.2rem"
+          >
             Home
           </Text>
         </Box>
         <Box
-          display="flex"
+          display="none"
           cursor="pointer"
+          md={{ display: "flex" }}
           padding="0.5rem 1.5rem 1.5rem 1.5rem"
           alignItems="center"
           gap="1rem"

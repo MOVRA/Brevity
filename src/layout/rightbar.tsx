@@ -15,6 +15,8 @@ export default function RightBar() {
       width="35%"
       height="100vh"
       borderLeft="1px solid #212121"
+      md={{ display: "flex" }}
+      display="none"
       top="0"
       position="sticky"
       padding="1rem 0rem"

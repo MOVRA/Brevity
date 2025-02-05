@@ -69,6 +69,9 @@ export default function ThreadBox({
             alignItems="center"
           >
             <Avatar
+              md={{ width: "2rem", height: "2rem" }}
+              width="1.5rem"
+              height="1.5rem"
               src={thread.parent.author.Profile.file}
               cursor="pointer"
               onClick={() => navigate(`/profile/${thread.parent?.authorId}`)}
@@ -124,6 +127,9 @@ export default function ThreadBox({
       >
         <Avatar
           src={thread.author.Profile.file}
+          md={{ width: "2rem", height: "2rem" }}
+          width="1.5rem"
+          height="1.5rem"
           onClick={() => navigate(`/profile/${thread.authorId}`)}
           cursor="pointer"
         />
@@ -144,7 +150,11 @@ export default function ThreadBox({
                 &#9679; {moment(thread.createdAt).startOf("minutes").fromNow()}
               </Text>
               {thread.parent && (
-                <Text fontSize="0.8rem">
+                <Text
+                  fontSize="0.8rem"
+                  display="none"
+                  md={{ display: "block" }}
+                >
                   replying to{" "}
                   <span style={{ color: "rgb(36, 116, 255)" }}>
                     @{thread.parent.author.username}

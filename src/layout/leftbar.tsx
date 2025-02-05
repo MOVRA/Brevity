@@ -19,7 +19,8 @@ export default function LeftBar() {
       borderRight="1px solid #212121"
       top="0"
       position="sticky"
-      display="flex"
+      display="none"
+      md={{ display: "flex" }}
       justifyContent="space-between"
       flexDirection="column"
     >
