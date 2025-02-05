@@ -1,10 +1,9 @@
 import { isLoggedIn } from "@/api/auth";
+import { Box } from "@chakra-ui/react";
 import { Navigate, Outlet } from "react-router";
+import BottomBar from "./bottombar";
 import LeftBar from "./leftbar";
 import RightBar from "./rightbar";
-import BottomBar from "./bottombar";
-import { AddThread } from "@/components/custom/add-thread-button";
-import { Box } from "@chakra-ui/react";
 
 export default function Layout() {
   if (!isLoggedIn()) {
