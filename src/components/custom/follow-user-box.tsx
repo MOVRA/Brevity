@@ -39,20 +39,42 @@ export default function UserBox({
         <Box display="flex" gap="0.5rem">
           {type == "follower" ? (
             <>
-              <Text as="h1" color="white">
+              <Text
+                as="h1"
+                color="white"
+                fontSize="0.8rem"
+                md={{ fontSize: "1rem" }}
+              >
                 {f.follower.name}
               </Text>
-              <Text as="h1" color="grey" fontWeight="light">
+              <Text
+                as="h1"
+                color="grey"
+                fontWeight="light"
+                fontSize="0.8rem"
+                md={{ fontSize: "1rem" }}
+              >
                 @{f.follower.username}
               </Text>
             </>
           ) : (
             <>
               {" "}
-              <Text as="h1" color="white">
+              <Text
+                as="h1"
+                color="white"
+                fontSize="0.8rem"
+                md={{ fontSize: "1rem" }}
+              >
                 {f.following.name}
               </Text>
-              <Text as="h1" color="grey" fontWeight="light">
+              <Text
+                as="h1"
+                color="grey"
+                fontWeight="light"
+                fontSize="0.8rem"
+                md={{ fontSize: "1rem" }}
+              >
                 @{f.following.username}
               </Text>
             </>
@@ -67,7 +89,7 @@ export default function UserBox({
               backgroundColor="transparent"
               borderRadius="1rem"
               border="1px solid gray"
-              height="2rem"
+              size={{ mdDown: "xs", mdTo2xl: "sm" }}
               loading={isPendingDeleteFollow}
               onClick={() => {
                 setFollowerFollowed(false);
@@ -83,7 +105,8 @@ export default function UserBox({
               backgroundColor="transparent"
               borderRadius="1rem"
               border="1px solid white"
-              height="2rem"
+              // height="2rem"
+              size={{ mdDown: "xs", mdTo2xl: "sm" }}
               loading={isPendingCreateFollow}
               onClick={() => {
                 setFollowerFollowed(true);
@@ -102,7 +125,7 @@ export default function UserBox({
               backgroundColor="transparent"
               borderRadius="1rem"
               border="1px solid gray"
-              height="2rem"
+              size={{ mdDown: "xs", mdTo2xl: "sm" }}
               loading={isPendingDeleteFollow}
               onClick={() => {
                 setFollowingFollowed(false);
@@ -118,7 +141,7 @@ export default function UserBox({
               backgroundColor="transparent"
               borderRadius="1rem"
               border="1px solid white"
-              height="2rem"
+              size={{ mdDown: "xs", mdTo2xl: "sm" }}
               loading={isPendingCreateFollow}
               onClick={() => {
                 setFollowingFollowed(true);

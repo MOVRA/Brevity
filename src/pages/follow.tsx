@@ -48,12 +48,20 @@ export default function Follow() {
         )}
         {!isFetching && (
           <>
-            <Tabs.Content value="followers">
+            <Tabs.Content
+              value="followers"
+              md={{ height: "100%" }}
+              height="100vh"
+            >
               {follow?.Follower.map((f) => (
                 <UserBox f={f} key={f.id} type={"follower"} />
               ))}
             </Tabs.Content>
-            <Tabs.Content value="following">
+            <Tabs.Content
+              value="following"
+              md={{ height: "100%" }}
+              height="100vh"
+            >
               {follow?.Following.map((f) => (
                 <UserBox f={f} key={f.id} type={"following"} />
               ))}
