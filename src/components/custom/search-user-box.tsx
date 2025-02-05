@@ -15,14 +15,30 @@ export default function SearchUserBox({ f }: { f: Users }) {
     DeleteFollow();
 
   return (
-    <Box display="flex" justifyContent="space-between" padding="1rem 0rem">
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      padding="1rem 0rem"
+      gap="1rem"
+    >
       <Box display="flex" gap="0.7rem" alignItems="center">
         <Avatar src={f.profile.file} />
         <Box display="flex" gap="0.5rem">
-          <Text as="h1" color="white">
+          <Text
+            as="h1"
+            color="white"
+            fontSize="0.8rem"
+            md={{ fontSize: "1rem" }}
+          >
             {f.name}
           </Text>
-          <Text as="h1" color="grey" fontWeight="light">
+          <Text
+            as="h1"
+            color="grey"
+            fontWeight="light"
+            fontSize="0.8rem"
+            md={{ fontSize: "1rem" }}
+          >
             @{f.username}
           </Text>
         </Box>
@@ -33,7 +49,7 @@ export default function SearchUserBox({ f }: { f: Users }) {
           backgroundColor="transparent"
           borderRadius="1rem"
           border="1px solid gray"
-          height="2rem"
+          size={{ mdDown: "xs", mdTo2xl: "sm" }}
           loading={isPendingDeleteFollow}
           onClick={() => {
             setFollow(false);
@@ -49,7 +65,7 @@ export default function SearchUserBox({ f }: { f: Users }) {
           backgroundColor="transparent"
           borderRadius="1rem"
           border="1px solid white"
-          height="2rem"
+          size={{ mdDown: "xs", mdTo2xl: "sm" }}
           loading={isPendingCreateFollow}
           onClick={() => {
             setFollow(true);

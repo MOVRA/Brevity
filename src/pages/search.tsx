@@ -27,7 +27,7 @@ export default function Search() {
   }
 
   return (
-    <Box width="100%">
+    <Box width="100%" height="100vh" md={{ height: "100%" }}>
       {isFetching && (
         <Box
           height="100vh"
