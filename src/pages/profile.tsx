@@ -165,13 +165,18 @@ export default function Profile() {
         {isPendingGetUser && (
           <Box display="flex" padding="1rem 1rem 0rem 1rem">
             <Stack width="full">
-              <Skeleton height="10rem" borderRadius="1rem" />
+              <Skeleton
+                height="8rem"
+                md={{ height: "10rem" }}
+                borderRadius="1rem"
+              />
               <SkeletonCircle
                 variant="shine"
                 size="4rem"
                 position="absolute"
-                top="13rem"
-                left="15rem"
+                top="11rem"
+                left="2rem"
+                md={{ top: "13rem", left: "15rem" }}
               />
             </Stack>
           </Box>
@@ -181,7 +186,8 @@ export default function Profile() {
             <>
               <Image
                 src={bgBanner}
-                height="10rem"
+                height="8rem"
+                md={{ height: "10rem" }}
                 width="100%"
                 borderRadius="1rem"
                 position="relative"
@@ -190,8 +196,9 @@ export default function Profile() {
                 src={users?.Profile?.file}
                 size="2xl"
                 position="absolute"
-                top="13rem"
-                left="15rem"
+                top="11rem"
+                left="2rem"
+                md={{ top: "13rem", left: "15rem" }}
               />
             </>
           </Box>
@@ -199,12 +206,14 @@ export default function Profile() {
         <Box
           display="flex"
           marginTop="1rem"
-          gap="1rem"
+          gap="0"
           justifyContent="space-between"
+          md={{ gap: "1rem", justifyContent: "space-between" }}
           borderBottom="1px solid #212121"
         >
           <Box
-            margin="2rem 1rem 1rem 1rem"
+            margin="2rem 0rem 1rem 1rem"
+            md={{ margin: "2rem 1rem 1rem 1rem" }}
             display="flex"
             flexDirection="column"
             gap="0.8rem"
@@ -256,11 +265,12 @@ export default function Profile() {
               </Skeleton>
             </Box>
           </Box>
-          <Box marginRight="1rem">
+          <Box height="100%" width="100%" md={{ marginRight: "1rem" }}>
             <Skeleton
               display="flex"
               justifyContent="center"
-              width="5rem"
+              width="2.5rem"
+              md={{ width: "5rem" }}
               height="2rem"
               loading={isPendingGetUser}
             >
@@ -304,7 +314,7 @@ export default function Profile() {
             ))}
         </Box>
       </Box>
-      <DialogRoot open={editDialog} size="lg">
+      <DialogRoot open={editDialog} size={{ mdTo2xl: "lg", mdDown: "full" }}>
         <DialogContent backgroundColor="black" border="1px solid #212121">
           <DialogHeader>
             <Text as="h1" fontWeight="semibold" color="white">
