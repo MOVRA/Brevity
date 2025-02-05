@@ -265,10 +265,14 @@ export default function Profile() {
               </Skeleton>
             </Box>
           </Box>
-          <Box height="100%" width="100%" md={{ marginRight: "1rem" }}>
+          <Box
+            height="100%"
+            width="100%"
+            md={{ marginRight: "1rem", display: "flex", justifyContent: "end" }}
+          >
             <Skeleton
               display="flex"
-              justifyContent="center"
+              justifyContent="end"
               width="2.5rem"
               md={{ width: "5rem" }}
               height="2rem"

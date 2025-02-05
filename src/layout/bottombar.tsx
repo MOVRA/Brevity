@@ -4,10 +4,12 @@ import { Box } from "@chakra-ui/react";
 import { CgProfile } from "react-icons/cg";
 import { LuHeart, LuHouse, LuPlus, LuSearch } from "react-icons/lu";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 
 export default function BottomBar() {
   const dispatch = useDispatch();
+  const pathname = useLocation();
+  const navigate = useNavigate();
   return (
     <Box
       display="flex"
@@ -80,7 +82,9 @@ export default function BottomBar() {
         <CgProfile />
       </NavLink>
       <Button
-        onClick={() => dispatch(open(true))}
+        onClick={() =>
+          pathname.pathname != "/" ? navigate("/") : dispatch(open(true))
+        }
         style={{
           color: "white",
           display: "flex",

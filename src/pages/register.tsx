@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { MutateRegister } from "@/tanstack/register-tanstack";
 import { Toaster } from "@/components/ui/toaster";
+import { Link } from "react-router";
 
 export default function Register() {
   const {
@@ -63,6 +64,9 @@ export default function Register() {
           >
             <Input type="password" {...register("password")} />
           </Field>
+          <Link to="/sign-in" style={{ color: "gray", fontSize: "0.8rem" }}>
+            Already have an account!
+          </Link>
           <Button
             backgroundColor="white"
             color="black"
