@@ -207,9 +207,9 @@ export default function Profile() {
           display="flex"
           marginTop="1rem"
           gap="0"
-          justifyContent="space-between"
           md={{ gap: "1rem", justifyContent: "space-between" }}
           borderBottom="1px solid #212121"
+          justifyContent="space-between"
         >
           <Box
             margin="2rem 0rem 1rem 1rem"
@@ -233,7 +233,7 @@ export default function Profile() {
                 @{users?.username}
               </Text>
             </Skeleton>
-            <Skeleton height="4" loading={isPendingGetUser} width="20rem">
+            <Skeleton height="4" loading={isPendingGetUser} width="12rem">
               <Text color="white" fontSize="0.8rem">
                 {users?.Profile?.bio}
               </Text>
@@ -266,16 +266,14 @@ export default function Profile() {
             </Box>
           </Box>
           <Box
-            height="100%"
-            width="100%"
+            marginRight="1rem"
             md={{ marginRight: "1rem", display: "flex", justifyContent: "end" }}
           >
             <Skeleton
               display="flex"
               justifyContent="end"
-              width="2.5rem"
-              md={{ width: "5rem" }}
-              height="2rem"
+              width="100%"
+              md={{ width: "100%", height:"2rem"  }}
               loading={isPendingGetUser}
             >
               <Button
