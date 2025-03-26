@@ -17,9 +17,10 @@ export const MutateLogin = () => {
     onError: (error) => {
       if (isAxiosError(error)) {
         toaster.error({
-          title: error.response?.data.message,
+          title: error.response?.data?.message,
         });
       }
+      console.log(error);
     },
   });
 };

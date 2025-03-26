@@ -1,6 +1,7 @@
 import { isLoggedIn } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { Toaster } from "@/components/ui/toaster";
 import { MutateLogin } from "@/tanstack/login-tanstack";
 import { LoginSchema, LoginType } from "@/validator/auth";
 import { Box, Input, Text } from "@chakra-ui/react";
@@ -82,6 +83,7 @@ export default function Login() {
           </Button>
         </Box>
       </form>
+      <Toaster />
     </Box>
   );
 }
